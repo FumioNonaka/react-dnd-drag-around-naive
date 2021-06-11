@@ -17,7 +17,7 @@ export const Container = () => {
 			{Object.keys(boxes).map((key) => {
 				const { left, top, title } = boxes[key];
 				return (
-					<Box key={key} left={left} top={top}>
+					<Box key={key} id={key} left={left} top={top}>
 						{title}
 					</Box>
 				);
