@@ -10,7 +10,7 @@ const styles = {
 	border: '1px solid black',
 	position: 'relative',
 };
-export const Container = () => {
+export const Container = ({ hideSourceOnDrag }) => {
 	const [boxes, setBoxes] = useState({
 		a: { top: 20, left: 80, title: 'Drag me around' },
 		b: { top: 180, left: 20, title: 'Drag me too' },
@@ -37,7 +37,7 @@ export const Container = () => {
 			{Object.keys(boxes).map((key) => {
 				const { left, top, title } = boxes[key];
 				return (
-					<Box key={key} id={key} left={left} top={top}>
+					<Box key={key} id={key} left={left} top={top} hideSourceOnDrag={hideSourceOnDrag}>
 						{title}
 					</Box>
 				);
