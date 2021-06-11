@@ -9,7 +9,6 @@ const styles = {
 	border: '1px solid black',
 	position: 'relative',
 };
-// export const Container = () => {
 export const Container = ({ hideSourceOnDrag }) => {
 	const [boxes, setBoxes] = useState({
 		a: { top: 20, left: 80, title: 'Drag me around' },
@@ -25,9 +24,9 @@ export const Container = ({ hideSourceOnDrag }) => {
 	const [, drop] = useDrop(() => ({
 		accept: ItemTypes.BOX,
 		drop(item, monitor) {
-			const delta = monitor.getDifferenceFromInitialOffset();
-			const left = Math.round(item.left + delta.x);
-			const top = Math.round(item.top + delta.y);
+			const { x, y } = monitor.getDifferenceFromInitialOffset();
+			const left = Math.round(item.left + x);
+			const top = Math.round(item.top + y);
 			moveBox(item.id, left, top);
 			return undefined;
 		},
@@ -37,7 +36,6 @@ export const Container = ({ hideSourceOnDrag }) => {
 			{Object.keys(boxes).map((key) => {
 				const { left, top, title } = boxes[key];
 				return (
-					// <Box key={key} id={key} left={left} top={top}>
 					<Box key={key} id={key} left={left} top={top} hideSourceOnDrag={hideSourceOnDrag}>
 						{title}
 					</Box>
