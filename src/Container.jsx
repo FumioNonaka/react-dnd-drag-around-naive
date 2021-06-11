@@ -1,4 +1,7 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import { useDrop } from 'react-dnd';
+import update from 'immutability-helper';
+import { ItemTypes } from './ItemTypes';
 import { Box } from './Box';
 
 const styles = {
@@ -12,8 +15,25 @@ export const Container = () => {
 		a: { top: 20, left: 80, title: 'Drag me around' },
 		b: { top: 180, left: 20, title: 'Drag me too' },
 	});
+	const moveBox = useCallback((id, left, top) => {
+		setBoxes(update(boxes, {
+			[id]: {
+				$merge: { left, top },
+			},
+		}));
+	}, [boxes, setBoxes]);
+	const [, drop] = useDrop(() => ({
+		accept: ItemTypes.BOX,
+		drop(item, monitor) {
+			const { x, y } = monitor.getDifferenceFromInitialOffset();
+			const left = Math.round(item.left + x);
+			const top = Math.round(item.top + y);
+			moveBox(item.id, left, top);
+			return undefined;
+		},
+	}), [moveBox]);
 	return (
-		<div style={styles}>
+		<div ref={drop} style={styles}>
 			{Object.keys(boxes).map((key) => {
 				const { left, top, title } = boxes[key];
 				return (
